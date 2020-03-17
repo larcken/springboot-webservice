@@ -2,11 +2,16 @@ package com.dongsun.book.springboot.service.posts;
 
 import com.dongsun.book.springboot.web.domain.posts.Posts;
 import com.dongsun.book.springboot.web.domain.posts.PostsRepository;
+import com.dongsun.book.springboot.web.dto.PostsListResponseDto;
 import com.dongsun.book.springboot.web.dto.PostsResponseDto;
 import com.dongsun.book.springboot.web.dto.PostsSaveRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 
 @RequiredArgsConstructor
@@ -34,5 +39,11 @@ public class PostsService {
     public PostsResponseDto findById(Long id) {
         Posts entity = postsRepository.findById(id).orElseThrow(() -> new IllegalArgumentException(("해당 사용자가 없습니다. id=" + id)));
         return new PostsResponseDto(entity);
+    }
+
+    @Transactional(readOnly = true)
+    public List<PostsListResponseDto> findAllDesc() {
+        // Posts를 리턴받아 dto로 변환하여 리스트로 생성
+        return postsRepository.findAllDesc().stream().map(PostsListResponseDto::new).collect(Collectors.toList());
     }
 }
