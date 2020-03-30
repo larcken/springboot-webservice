@@ -8,11 +8,21 @@
         {{>layout/header}}
         <h1>Start Spring boot Webservice</h1>
         <div class="col-md-12">
+            <!-- 로그인 가능 영역 -->
             <div class="row">
                 <div class="col-md-6">
                     <a href="/posts/save" role="button" class="btn btn-primary">
                         글 등록
                     </a>
+                    {{#userName}}
+                        Logged in as: <span id="user">{{userName}}</span>
+                        <a href="/logout" class="btn btn-info active" role="button">Logout</a>
+                    {{/userName}}
+                    {{^userName}}
+                        <!-- /oauth2/authorization/google - 스프링 시큐리티에서 기본 제공하는 로그인 url -->
+                        <a href="/oauth2/authorization/google" class="btn btn-success active" role="button">Google Login</a>
+                    {{/userName}}
+                    <!-- todo : IndexController 에서 userName 을 Model에 저장하는 코드 추가 -->
                 </div>
             </div>
             <br>
