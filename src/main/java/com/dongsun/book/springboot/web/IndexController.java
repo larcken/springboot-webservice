@@ -1,5 +1,6 @@
 package com.dongsun.book.springboot.web;
 
+import com.dongsun.book.springboot.config.auth.LoginUser;
 import com.dongsun.book.springboot.config.auth.dto.SessionUser;
 import com.dongsun.book.springboot.domain.user.User;
 import com.dongsun.book.springboot.service.posts.PostsService;
@@ -20,11 +21,10 @@ public class IndexController {
     private final HttpSession httpSession;
 
     @GetMapping("/")
-    public String index(Model model) {
+    public String index(Model model, @LoginUser SessionUser user) {
         // 서버 템플릿 엔진에서 사용할 수 있는 객체를 저장
         // postsService.findAllDesc()로 가져온 결과를 posts로 index.mustache에 전달
         model.addAttribute("posts", postsService.findAllDesc());
-        SessionUser user = (SessionUser) httpSession.getAttribute("user");
 
         if(user != null) {
             model.addAttribute("userName", user.getName());
